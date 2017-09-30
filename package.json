@@ -1,0 +1,39 @@
+{
+  "name": "babel-plugin-isotropy-keyvaluedb",
+  "description": "Babel plugin for transforming to lib-keyvaluedb",
+  "version": "0.0.1",
+  "author": "Arivanandan<uarivanandan@gmail.com>",
+  "contributors": [
+    "Jeswin Kumar<jeswinpk@agilehead.com>",
+    "Arivanandan<uarivanandan@gmail.com>"
+  ],
+  "main": "dist/transform-to-isotropy-keyvaluedb.js",
+  "scripts": {
+    "test": "mocha dist/test/test.js",
+    "debug": "mocha --inspect-brk dist/test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/isotropy/babel-plugin-isotropy-keyvaluedb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/isotropy/babel-plugin-isotropy-keyvaluedb/issues"
+  },
+  "dependencies": {
+    "isotropy-ast-analyzer-keyvaluedb": "0.0.1",
+    "ramda": "^0.24.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-plugin-transform-async-to-generator": "^6.22.0",
+    "babel-preset-latest": "^6.22.0",
+    "babel-preset-modern-browsers": "^7.0.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "babel-template": "^6.26.0",
+    "mocha": "*",
+    "path": "^0.12.7",
+    "should": "*",
+    "source-map-support": "^0.4.8"
+  },
+  "license": "MIT"
+}
