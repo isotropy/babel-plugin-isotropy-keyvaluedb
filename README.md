@@ -44,7 +44,7 @@ Example:
 import myDb from "./my-db";
 
 async function getTodos() {
-  // return list of files in /home/docs
+  // return all keyvalue pairs in "redis://127.0.0.1:6379"
   return myDb.todos
 }
 ```
