@@ -2,7 +2,7 @@ Isotropy Babel Plugin for Key-Value-DB
 ======================================
 This module is a babel plugin that transpiles array operations into
 corresponding kv-db operations.
-It uses isotropy-ast-analyzer-db for AST analysis.
+It uses isotropy-ast-analyzer-keyvaluedb for AST analysis.
 
 This is part of the isotropy framework (www.isotropy.org).
 
@@ -12,15 +12,17 @@ Plugin configuration:
 ```
 plugins: [
   [
-    "transform-to-isotropy-fs",
+    "transform-to-isotropy-keyvalueb",
     {
       projects: [
         {
-          dir: "src/fs",
+          dir: "dist/test",
           modules: [
             {
-              source: "my-fs",
-              locations: [{ name: "docs", path: "/home/docs" }]
+              source: "fixtures/my-db",
+              locations: [
+                { name: "todos", connStr: "redis://127.0.0.1:6379" }
+              ]
             }
           ]
         }
@@ -32,17 +34,17 @@ plugins: [
 projects:  
 dir: Specify the root of the project.  
 modules:  
-source: Points to the fs file.  
+source: Points to the local db file.  
 locations:  
-name: The name used to access the path specified alongside.  
-path: The path at which the actual filesystem operations will take place.  
+name: The name used to access the connStr specified alongside.  
+connStr: The connection string used when the actual database operations take place.  
 
 Example:
 ```javascript
-import myFs from "./my-fs";
+import myDb from "./my-db";
 
-async function getFiles() {
+async function getTodos() {
   // return list of files in /home/docs
-  return myFs.docs
+  return myDb.todos
 }
 ```
