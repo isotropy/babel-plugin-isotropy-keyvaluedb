@@ -1,7 +1,7 @@
 import template from "babel-template";
 
 export function put() {
-  return template(`LIB_DB.put(CONN_STR, DATA);`);
+  return template(`LIB_DB.put(CONN_STR, { key: KEY, value: VALUE });`);
 }
 
 export function get() {
