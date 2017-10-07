@@ -2,10 +2,10 @@
   "name": "babel-plugin-isotropy-keyvaluedb",
   "description": "Babel plugin for transforming to lib-keyvaluedb",
   "version": "0.0.1",
-  "author": "Arivanandan<uarivanandan@gmail.com>",
+  "author": "Isotropy Team<isotropy@agilehead.com>",
   "contributors": [
-    "Jeswin Kumar<jeswinpk@agilehead.com>",
-    "Arivanandan<uarivanandan@gmail.com>"
+    "Arivanandan<uarivanandan@gmail.com>",
+    "Jeswin Kumar<jeswinpk@agilehead.com>"
   ],
   "main": "dist/transform-to-isotropy-keyvaluedb.js",
   "scripts": {
