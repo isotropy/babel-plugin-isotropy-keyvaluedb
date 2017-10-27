@@ -4,7 +4,6 @@ import * as template from "./templates";
 import * as t from "babel-types";
 
 export default function(opts) {
-  let analyzers;
   // Specifies the isotropy keyvaluedb library
   const libDbSource = t.StringLiteral("isotropy-lib-keyvaluedb");
   let libDbIdentifier;
@@ -24,7 +23,7 @@ export default function(opts) {
           mapper[analysis.operation](
             analysis,
             t.identifier(libDbIdentifier),
-            t.stringLiteral(analysis.source.module)
+            t.stringLiteral(analysis.database.connection)
           )
         ).expression
       )
@@ -32,53 +31,39 @@ export default function(opts) {
     path.skip();
   };
 
-  return {
-    plugin: {
-      pre() {
-        analyzers = getAnalyzers();
-      },
-      visitor: {
-        ImportDeclaration: {
-          exit(path, state) {
-            const analysis = analyzers.meta.analyzeImportDeclaration(
-              path,
-              state
-            );
-            if (analysis) {
-              libDbIdentifier = path.scope.generateUidIdentifier("isotropyDb")
-                .name;
-              /*
-                Inserts statement:
-                * isotropy Db lib module import
-              */
-              path.replaceWith(
-                t.importDeclaration(
-                  [t.importDefaultSpecifier(t.identifier(libDbIdentifier))],
-                  libDbSource
-                )
-              );
-              path.skip();
-            }
-          }
-        },
+  const visitor = {};
+  const analyzers = getAnalyzers();
 
-        AssignmentExpression: {
-          exit(path, state) {
-            let analysis = analyzers.write.analyzeAssignmentExpression(
-              path,
-              state
-            );
-            if (analysis) replacer(analysis.value, path);
-          }
-        },
-
-        CallExpression: {
-          exit(path, state) {
-            let analysis = analyzers.read.analyzeCallExpression(path, state);
-            if (analysis) replacer(analysis.value, path);
-          }
-        }
+  visitor.ImportDeclaration = {
+    exit(path, state) {
+      const analysis = analyzers.meta.analyzeImportDeclaration(path, state);
+      if (analysis) {
+        libDbIdentifier = path.scope.generateUidIdentifier("isotropyDb").name;
+        /*Inserts statement:
+          * isotropy Db lib module import
+        */
+        path.replaceWith(
+          t.importDeclaration(
+            [t.importDefaultSpecifier(t.identifier(libDbIdentifier))],
+            libDbSource
+          )
+        );
+        path.skip();
       }
     }
   };
+
+  visitor.AssignmentExpression = function(path, state) {
+    let analysis = analyzers.write.analyzeAssignmentExpression(path, state);
+    if (analysis) replacer(analysis.value, path);
+    path.stop();
+  };
+
+  visitor.CallExpression = function(path, state) {
+    let analysis = analyzers.read.analyzeCallExpression(path, state);
+    if (analysis) replacer(analysis.value, path);
+    path.stop();
+  };
+
+  return { visitor };
 }

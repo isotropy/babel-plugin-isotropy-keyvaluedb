@@ -2,7 +2,7 @@ import should from "should";
 import * as babel from "babel-core";
 import fs from "fs";
 import path from "path";
-import makePlugin from "../transform-to-isotropy-keyvaluedb";
+import transformToIsotropyKeyValueDB from "../transform-to-isotropy-keyvaluedb";
 import sourceMapSupport from "source-map-support";
 
 sourceMapSupport.install();
@@ -20,12 +20,11 @@ describe("isotropy-ast-analyzer-db", () => {
       const expected = fs
         .readFileSync(__dirname + `/fixtures/${dir}/expected.js`)
         .toString();
-      const pluginInfo = makePlugin(opts);
 
-      const babelResult = babel.transformFileSync(fixturePath, {
+      const opts = {
         plugins: [
           [
-            pluginInfo.plugin,
+            transformToIsotropyKeyValueDB(),
             {
               projects: [
                 {
@@ -33,9 +32,9 @@ describe("isotropy-ast-analyzer-db", () => {
                   modules: [
                     {
                       source: "dist/test/fixtures/my-db",
-                      databases: [
-                        { name: "todos", connStr: "redis://127.0.0.1:6379" }
-                      ]
+                      databases: {
+                        todos: { connection: "redis://127.0.0.1:6379" }
+                      }
                     }
                   ]
                 }
@@ -49,7 +48,9 @@ describe("isotropy-ast-analyzer-db", () => {
           allowImportExportEverywhere: true
         },
         babelrc: false
-      });
+      };
+
+      const babelResult = babel.transformFileSync(fixturePath, opts);
       const actual = babelResult.code + "\n";
       actual.should.deepEqual(expected);
     });

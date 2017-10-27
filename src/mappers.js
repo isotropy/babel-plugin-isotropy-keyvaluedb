@@ -4,8 +4,7 @@ export function put(result, libDb, connStr) {
   return {
     LIB_DB: libDb,
     CONN_STR: connStr,
-    KEY: result.keyNode,
-    VALUE: result.valueNode
+    ITEMS: result.items
   };
 }
 
@@ -13,7 +12,7 @@ export function get(result, libDb, connStr) {
   return {
     LIB_DB: libDb,
     CONN_STR: connStr,
-    DATA: result.keyNode
+    DATA: result.key
   };
 }
 
@@ -21,7 +20,7 @@ export function del(result, libDb, connStr) {
   return {
     LIB_DB: libDb,
     CONN_STR: connStr,
-    DATA: result.keyNode
+    DATA: result.key
   };
 }
 
