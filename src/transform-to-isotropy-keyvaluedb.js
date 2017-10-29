@@ -55,12 +55,14 @@ export default function(opts) {
 
   visitor.AssignmentExpression = function(path, state) {
     let analysis = analyzers.write.analyzeAssignmentExpression(path, state);
+    if (analysis.constructor.name === "Fault") throw Error(analysis.message);
     if (analysis) replacer(analysis.value, path);
     path.stop();
   };
 
   visitor.CallExpression = function(path, state) {
     let analysis = analyzers.read.analyzeCallExpression(path, state);
+    if (analysis.constructor.name === "Fault") throw Error(analysis.message);
     if (analysis) replacer(analysis.value, path);
     path.stop();
   };

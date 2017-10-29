@@ -30,6 +30,7 @@
     "babel-preset-modern-browsers": "^7.0.0",
     "babel-preset-stage-2": "^6.22.0",
     "babel-template": "^6.26.0",
+    "chimpanzee": "0.0.63",
     "mocha": "*",
     "path": "^0.12.7",
     "should": "*",

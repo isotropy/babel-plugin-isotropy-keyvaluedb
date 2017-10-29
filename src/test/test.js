@@ -50,16 +50,26 @@ describe("isotropy-ast-analyzer-db", () => {
         babelrc: false
       };
 
-      const babelResult = babel.transformFileSync(fixturePath, opts);
-      const actual = babelResult.code + "\n";
-      actual.should.deepEqual(expected);
+      const babelResult = () => babel.transformFileSync(fixturePath, opts);
+      return dir.includes("error")
+        ? should(babelResult).throw(Error)
+        : (() => {
+            const actual = babelResult().code + "\n";
+            actual.should.deepEqual(expected);
+          })();
     });
   }
 
   const tests = [
     ["put", "put"],
+    ["put-error", "put-error"],
     ["get", "get"],
-    ["del", "del"]
+    ["get-ulta", "get-ulta"],
+    ["get-error", "get-error"],
+    ["del", "del"],
+    ["del-error", "del-error"],
+    ["non-specific-read-error", "non-specific-read-error"],
+    ["non-specific-write-error", "non-specific-write-error"]
     // ["update", "update"],
   ];
 
